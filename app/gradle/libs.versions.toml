@@ -17,6 +17,8 @@ firebase-kotlin-sdk = "2.4.0"
 google-services = "4.4.2"
 kotlinx-serialization = "1.7.3"
 firebase-android-bom = "33.1.1"
+firebase-gradle-crashlytics = "3.0.2"
+
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -44,6 +46,8 @@ firebase-app = { module = "dev.gitlive:firebase-app", version.ref = "firebase-ko
 firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "firebase-kotlin-sdk" }
 firebase-firestore = { module = "dev.gitlive:firebase-firestore", version.ref = "firebase-kotlin-sdk" }
 firebase-database = { module = "dev.gitlive:firebase-database", version.ref = "firebase-kotlin-sdk" }
+firebase-crashlytics = { module = "dev.gitlive:firebase-crashlytics", version.ref = "firebase-kotlin-sdk" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -53,3 +57,4 @@ composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "k
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 googleServices = { id = "com.google.gms.google-services", version.ref = "google-services" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+firebaseCrashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-gradle-crashlytics" }

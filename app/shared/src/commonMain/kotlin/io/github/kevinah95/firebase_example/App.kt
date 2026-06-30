@@ -2,8 +2,8 @@ package io.github.kevinah95.firebase_example
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -13,6 +13,7 @@ import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.auth
 import dev.gitlive.firebase.firestore.firestore
 import dev.gitlive.firebase.database.database
+import dev.gitlive.firebase.crashlytics.crashlytics
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
@@ -40,6 +41,7 @@ object FirebaseHelper {
 fun App() {
     FirebaseHelper.init()
     val scope = rememberCoroutineScope()
+    val scrollState = rememberScrollState()
     
     // Error Logging
     var errorMessage by remember { mutableStateOf<String?>(null) }
@@ -121,6 +123,7 @@ fun App() {
                 .background(MaterialTheme.colorScheme.background)
                 .safeContentPadding()
                 .fillMaxSize()
+                .verticalScroll(scrollState)
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -139,7 +142,7 @@ fun App() {
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
-                            text = "Detalle del error:",
+                            text = "Detalle del error / log:",
                             style = MaterialTheme.typography.titleSmall,
                             color = MaterialTheme.colorScheme.onErrorContainer
                         )
@@ -153,7 +156,7 @@ fun App() {
                             onClick = { errorMessage = null },
                             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
                         ) {
-                            Text("Limpiar error")
+                            Text("Limpiar mensaje")
                         }
                     }
                 }
@@ -238,7 +241,7 @@ fun App() {
 
             // --- SECCIÓN FIRESTORE ---
             Card(
-                modifier = Modifier.fillMaxWidth().weight(1f)
+                modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text("🔥 Cloud Firestore (Estudiantes)", style = MaterialTheme.typography.titleMedium)
@@ -284,13 +287,38 @@ fun App() {
                     Text("Lista de Estudiantes:", style = MaterialTheme.typography.bodyLarge)
                     Spacer(modifier = Modifier.height(4.dp))
                     
-                    LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                        items(studentsList) { student ->
-                            ListItem(
-                                headlineContent = { Text(student.name) },
-                                supportingContent = { Text("Curso: ${student.course}") }
-                            )
-                        }
+                    studentsList.forEach { student ->
+                        ListItem(
+                            headlineContent = { Text(student.name) },
+                            supportingContent = { Text("Curso: ${student.course}") }
+                        )
+                    }
+                }
+            }
+
+            // --- SECCIÓN CRASHLYTICS ---
+            Card(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text("💥 Firebase Crashlytics", style = MaterialTheme.typography.titleMedium)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text("Envía reportes de excepciones y logs a la nube.", style = MaterialTheme.typography.bodySmall)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Button(
+                        onClick = {
+                            try {
+                                Firebase.crashlytics.log("Botón de simular error presionado en KMP!")
+                                Firebase.crashlytics.setCustomKey("estado_usuario", currentStatus)
+                                throw RuntimeException("Excepción de prueba para Crashlytics desde KMP!")
+                            } catch (e: Exception) {
+                                Firebase.crashlytics.recordException(e)
+                                errorMessage = "Excepción simulada registrada en Crashlytics. Se reportará en la nube al usar la configuración de producción."
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("Simular y Registrar Excepción")
                     }
                 }
             }
