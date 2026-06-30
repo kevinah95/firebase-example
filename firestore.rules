@@ -1,0 +1,21 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Educational rules:
+    // 1. Public paths are readable by anyone, writable by authenticated users.
+    match /public/{document=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    
+    // 2. User-specific documents are only accessible by that specific user.
+    match /users/{userId}/{document=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Fallback security rule: Deny all other access to teach safe defaults.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

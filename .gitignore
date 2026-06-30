@@ -1,0 +1,9 @@
+# Firebase Emulators Cache & Logs
+.firebase/
+firebase-debug.log
+ui-debug.log
+firestore-debug.log
+database-debug.log
+
+# OS files
+.DS_Store
