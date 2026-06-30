@@ -7,7 +7,7 @@
 ## 📁 Estructura del Repositorio
 
 Este repositorio está dividido en dos partes principales:
-*   **Configuraciones de Firebase (Carpeta Raíz):** Contiene los archivos de configuración de Firebase, reglas de seguridad y ajustes de los emuladores locales controlados por versiones.
+*   **Configuraciones de Firebase ([`/firebase`](./firebase)):** Contiene los archivos de configuración de Firebase, reglas de seguridad y ajustes de los emuladores locales controlados por versiones.
 *   **Aplicación Kotlin Multiplatform (`/app`):** El código base de KMP.
     *   [`/app/shared`](./app/shared): Código compartido multiplataforma. El SDK de Firebase para Kotlin se declara en el conjunto de fuentes (source set) `commonMain`.
     *   [`/app/androidApp`](./app/androidApp): Envoltorio (wrapper) de la aplicación nativa de Android.
@@ -56,10 +56,10 @@ Asegúrate de tener instalado **Node.js** en tu sistema.
 ### 2. Iniciar los Emuladores
 Desde el directorio raíz de este repositorio, ejecuta:
 ```bash
-npx -y firebase-tools@latest emulators:start
+cd firebase && npx -y firebase-tools@latest emulators:start
 ```
 
-Esto iniciará los servicios locales en los siguientes puertos (configurados en [`firebase.json`](./firebase.json)):
+Esto iniciará los servicios locales en los siguientes puertos (configurados en [`firebase/firebase.json`](./firebase/firebase.json)):
 *   **Emulador de Autenticación (Auth):** `9099`
 *   **Emulador de Firestore (Base de datos NoSQL):** `8080`
 *   **Emulador de Realtime Database:** `9000`

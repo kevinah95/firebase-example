@@ -4,7 +4,7 @@ tasks:
   emulator:
     desc: Inicia el emulador local de Firebase (Auth, Firestore, Realtime DB y UI)
     cmds:
-      - npx -y firebase-tools@latest emulators:start
+      - cd firebase && npx -y firebase-tools@latest emulators:start
 
   build:
     desc: Compila el proyecto KMP y genera los binarios
