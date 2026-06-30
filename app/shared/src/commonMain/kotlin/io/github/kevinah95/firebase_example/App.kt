@@ -41,6 +41,9 @@ fun App() {
     FirebaseHelper.init()
     val scope = rememberCoroutineScope()
     
+    // Error Logging
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+
     // Auth State
     var currentUserUid by remember { mutableStateOf<String?>(null) }
     
@@ -62,7 +65,7 @@ fun App() {
                     currentUserUid = user?.uid
                 }
             } catch (e: Exception) {
-                // Manejar error
+                errorMessage = "Auth State Flow: ${e.message}"
             }
         }
 
@@ -80,7 +83,7 @@ fun App() {
                         studentsList = list
                     }
             } catch (e: Exception) {
-                // Manejar error
+                errorMessage = "Firestore Flow: ${e.message}"
             }
         }
 
@@ -94,7 +97,7 @@ fun App() {
                     }
                 }
             } catch (e: Exception) {
-                // Manejar error
+                errorMessage = "Realtime DB Flow: ${e.message}"
             }
         }
     }
@@ -115,6 +118,34 @@ fun App() {
                 modifier = Modifier.padding(bottom = 16.dp)
             )
 
+            // --- DISPLAY ERROR ---
+            if (errorMessage != null) {
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer),
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp)
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(
+                            text = "Detalle del error:",
+                            style = MaterialTheme.typography.titleSmall,
+                            color = MaterialTheme.colorScheme.onErrorContainer
+                        )
+                        Text(
+                            text = errorMessage ?: "",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onErrorContainer
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Button(
+                            onClick = { errorMessage = null },
+                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                        ) {
+                            Text("Limpiar error")
+                        }
+                    }
+                }
+            }
+
             // --- SECCIÓN AUTH ---
             Card(
                 modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp)
@@ -130,8 +161,9 @@ fun App() {
                             scope.launch {
                                 try {
                                     Firebase.auth.signOut()
+                                    errorMessage = null
                                 } catch (e: Exception) {
-                                    // Manejar error
+                                    errorMessage = "Error al cerrar sesión: ${e.message}"
                                 }
                             }
                         }) {
@@ -144,8 +176,9 @@ fun App() {
                             scope.launch {
                                 try {
                                     Firebase.auth.signInAnonymously()
+                                    errorMessage = null
                                 } catch (e: Exception) {
-                                    // Manejar error
+                                    errorMessage = "Error al iniciar sesión anónima: ${e.message}"
                                 }
                             }
                         }) {
@@ -177,8 +210,9 @@ fun App() {
                                 try {
                                     Firebase.database.reference("system_status").setValue(statusInput)
                                     statusInput = ""
+                                    errorMessage = null
                                 } catch (e: Exception) {
-                                    // Manejar error
+                                    errorMessage = "Error al actualizar estado (RTDB): ${e.message}"
                                 }
                             }
                         },
@@ -221,8 +255,9 @@ fun App() {
                                         .set(newStudent)
                                     studentName = ""
                                     studentCourse = ""
+                                    errorMessage = null
                                 } catch (e: Exception) {
-                                    // Manejar error
+                                    errorMessage = "Error al agregar estudiante (Firestore): ${e.message}"
                                 }
                             }
                         },
