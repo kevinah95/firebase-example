@@ -56,20 +56,31 @@ fun App() {
     var statusInput by remember { mutableStateOf("") }
     var currentStatus by remember { mutableStateOf("Desconocido") }
 
-    // Listeners
+    // 1. Escuchar SIEMPRE el estado de autenticación
     LaunchedEffect(Unit) {
-        // Observe Auth State
         launch {
             try {
                 Firebase.auth.authStateChanged.collect { user ->
                     currentUserUid = user?.uid
+                    if (user != null) {
+                        errorMessage = null // Limpiar errores al autenticarse
+                    }
                 }
             } catch (e: Exception) {
                 errorMessage = "Auth State Flow: ${e.message}"
             }
         }
+    }
 
-        // Observe Firestore Students List
+    // 2. Escuchar Firestore y Realtime DB ÚNICAMENTE si hay un usuario logueado
+    LaunchedEffect(currentUserUid) {
+        if (currentUserUid == null) {
+            studentsList = emptyList()
+            currentStatus = "Desconocido"
+            return@LaunchedEffect
+        }
+
+        // Activar la escucha de Firestore
         launch {
             try {
                 Firebase.firestore.collection("students")
@@ -81,19 +92,21 @@ fun App() {
                     }
                     .collect { list ->
                         studentsList = list
+                        errorMessage = null
                     }
             } catch (e: Exception) {
                 errorMessage = "Firestore Flow: ${e.message}"
             }
         }
 
-        // Observe Realtime DB Status Message
+        // Activar la escucha de Realtime Database
         launch {
             try {
                 Firebase.database.reference("system_status").valueEvents.collect { snapshot ->
                     val value = try { snapshot.value<String>() } catch (e: Exception) { null }
                     if (value != null) {
                         currentStatus = value
+                        errorMessage = null
                     }
                 }
             } catch (e: Exception) {
