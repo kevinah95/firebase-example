@@ -1,0 +1,7 @@
+{
+  "rules": {
+    // Only authenticated users can read/write data in the Realtime Database.
+    ".read": "auth != null",
+    ".write": "auth != null"
+  }
+}
