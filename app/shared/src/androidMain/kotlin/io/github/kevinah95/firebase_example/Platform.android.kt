@@ -7,3 +7,4 @@ class AndroidPlatform : Platform {
 }
 
 actual fun getPlatform(): Platform = AndroidPlatform()
+actual fun getEmulatorHost(): String = "10.0.2.2"

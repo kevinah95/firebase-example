@@ -1,0 +1,32 @@
+version: '3'
+
+tasks:
+  emulator:
+    desc: Inicia el emulador local de Firebase (Auth, Firestore, Realtime DB y UI)
+    cmds:
+      - cd firebase && npx -y firebase-tools@latest emulators:start
+
+  build:
+    desc: Compila el proyecto KMP y genera los binarios
+    cmds:
+      - cd app && ./gradlew assembleDebug
+
+  run-android:
+    desc: Instala y ejecuta la aplicación de Android en un emulador o dispositivo conectado
+    cmds:
+      - cd app && ./gradlew :androidApp:installDebug
+
+  run-ios:
+    desc: Abre la aplicación de iOS en Xcode para ejecutarla en un simulador o dispositivo
+    cmds:
+      - open app/iosApp/iosApp.xcodeproj
+
+  test-android:
+    desc: Ejecuta las pruebas unitarias para la plataforma Android
+    cmds:
+      - cd app && ./gradlew :shared:testAndroidHostTest
+
+  clean:
+    desc: Limpia los archivos compilados del proyecto
+    cmds:
+      - cd app && ./gradlew clean

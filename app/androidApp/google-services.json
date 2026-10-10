@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "123456789012",
+    "project_id": "firebase-kmp-edu",
+    "firebase_url": "https://firebase-kmp-edu-default-rtdb.firebaseio.com",
+    "storage_bucket": "firebase-kmp-edu.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:123456789012:android:a1b2c3d4e5f6g7h8",
+        "android_client_info": {
+          "package_name": "io.github.kevinah95.firebase_example"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "mock_api_key_for_local_emulators_only"
+        }
+      ],
+      "services": {
+        "appdetect_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -13,6 +13,12 @@ composeMultiplatform = "1.11.1"
 junit = "4.13.2"
 kotlin = "2.4.0"
 material3 = "1.11.0-alpha07"
+firebase-kotlin-sdk = "2.4.0"
+google-services = "4.4.2"
+kotlinx-serialization = "1.7.3"
+firebase-android-bom = "33.1.1"
+firebase-gradle-crashlytics = "3.0.2"
+
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -32,6 +38,16 @@ compose-material3 = { module = "org.jetbrains.compose.material3:material3", vers
 compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "composeMultiplatform" }
 compose-components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "composeMultiplatform" }
 compose-uiToolingPreview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "composeMultiplatform" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-android-bom" }
+
+# GitLive Firebase Kotlin SDK
+firebase-app = { module = "dev.gitlive:firebase-app", version.ref = "firebase-kotlin-sdk" }
+firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "firebase-kotlin-sdk" }
+firebase-firestore = { module = "dev.gitlive:firebase-firestore", version.ref = "firebase-kotlin-sdk" }
+firebase-database = { module = "dev.gitlive:firebase-database", version.ref = "firebase-kotlin-sdk" }
+firebase-crashlytics = { module = "dev.gitlive:firebase-crashlytics", version.ref = "firebase-kotlin-sdk" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -39,3 +55,6 @@ androidMultiplatformLibrary = { id = "com.android.kotlin.multiplatform.library",
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+googleServices = { id = "com.google.gms.google-services", version.ref = "google-services" }
+kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+firebaseCrashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-gradle-crashlytics" }
